@@ -1,0 +1,40 @@
+{
+  "name": "solid-styled-components",
+  "description": "Styled Components for Solid",
+  "version": "0.26.3",
+  "author": "Ryan Carniato",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/solidui/solid-styled-components"
+  },
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+    "src"
+  ],
+  "sideEffects": "false",
+  "scripts": {
+    "test": "jest && npm run test:types",
+    "test:types": "tsc --project tsconfig.test.json"
+  },
+  "dependencies": {
+    "csstype": "^2.6.2",
+    "goober": "^2.0.35"
+  },
+  "peerDependencies": {
+    "solid-js": ">= 0.26.0"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "7.13.0",
+    "babel-preset-solid": "^0.26.0",
+    "jest": "^26.6.3",
+    "solid-jest": "^0.0.3",
+    "solid-js": "^0.26.3"
+  },
+  "jest": {
+    "preset": "solid-jest/preset/browser"
+  }
+}
