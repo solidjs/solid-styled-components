@@ -48,6 +48,37 @@ const Btn = styled("button")(
 <Btn size={20} />;
 ```
 
+#### Nesting styled components
+
+```jsx
+import { styled } from "solid-styled-components";
+
+const Icon = styled("span")`
+  display: flex;
+  flex: 1;
+  color: red;
+`;
+
+const Button = styled("button")`
+  background: dodgerblue;
+  color: white;
+  border: ${Math.random()}px solid white;
+
+  &:focus,
+  &:hover {
+    padding: 1em;
+  }
+
+  .otherClass {
+    margin: 0;
+  }
+
+  ${Icon.className} {
+    color: black;
+  }
+`;
+```
+
 #### Style Object
 
 ```jsx
@@ -118,25 +149,6 @@ const styleTag = `<style id="_goober">${extractCss()}</style>`;
 // Note: To be able to `hydrate` the styles you should use the proper `id` so `goober` can pick it up and use it as the target from now on
 ```
 
-### `glob`
-
-To create a global style, you need to call `glob` with your global tagged template.
-
-```js
-import { glob } from "solid-styled-components";
-
-glob`
-  html,
-  body {
-    background: light;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-`;
-```
-
 ### `createGlobalStyles`
 
 For a global style component, you call `createGlobalStyles` with your global tagged template.
@@ -156,10 +168,11 @@ const GlobalStyles = () => {
     }
   `;
   return <Styles />;
-}
+};
 ```
 
 ### `Theme`
+
 You can set a Theme Provider (remember to use state or signals if you want it to be reactive)
 
 ```jsx
@@ -171,7 +184,7 @@ const theme = {
   }
 };
 
-const SomeText = styled('div')`
+const SomeText = styled("div")`
   color: ${props => props.theme.colors.primary};
 `;
 
@@ -184,6 +197,7 @@ render(
   document.getElementById("app")
 );
 ```
+
 The library provides a `useTheme` hook if you wish to use it elsewhere like in you `css` functions.
 
 ### `setup(prefixer: (key: string, value: any) => string)`

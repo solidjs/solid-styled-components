@@ -1,5 +1,12 @@
 import { css, setup as gooberSetup } from "goober";
-import { mergeProps, splitProps, createContext, useContext, createComponent } from "solid-js";
+import {
+  mergeProps,
+  splitProps,
+  createContext,
+  useContext,
+  createComponent,
+  untrack
+} from "solid-js";
 import { spread, ssr, ssrSpread, isServer } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 export function setup(prefixer) {
@@ -20,17 +27,20 @@ export function useTheme() {
 export function styled(tag) {
   let _ctx = this || {};
   return (...args) => {
-    return props => {
+    const Styled = props => {
       const theme = useContext(ThemeContext);
-      const clone = mergeProps(props, {
+      const withTheme = mergeProps(props, { theme });
+      const clone = mergeProps(withTheme, {
         get className() {
-          const pClassName = props.className,
-            append = "className" in props && /^go[0-9]+/.test(pClassName);
+          const pClassName = withTheme.className,
+            append = "className" in withTheme && /^go[0-9]+/.test(pClassName);
           // Call `css` with the append flag and pass the props
-          let className = css.apply({ target: this.target, o: append, p: clone, g: _ctx.g }, args);
+          let className = css.apply(
+            { target: _ctx.target, o: append, p: withTheme, g: _ctx.g },
+            args
+          );
           return [pClassName, className].filter(Boolean).join(" ");
-        },
-        theme
+        }
       });
       const [local, newProps] = splitProps(clone, ["as"]);
       const createTag = local.as || tag;
@@ -50,10 +60,16 @@ export function styled(tag) {
       }
       return el;
     };
+    Styled.className = props => {
+      return untrack(() => {
+        return css.apply({ target: _ctx.target, p: props, g: _ctx.g }, args);
+      });
+    };
+    return Styled;
   };
 }
 export function createGlobalStyles() {
-  const fn = styled.call({ g: 1 }, 'div').apply(null, arguments);
+  const fn = styled.call({ g: 1 }, "div").apply(null, arguments);
   return function GlobalStyles(props) {
     fn(props);
     return null;

@@ -1,7 +1,7 @@
 {
   "name": "solid-styled-components",
   "description": "Styled Components for Solid",
-  "version": "0.26.3",
+  "version": "0.26.4",
   "author": "Ryan Carniato",
   "license": "MIT",
   "repository": {
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "csstype": "^2.6.2",
-    "goober": "^2.0.35"
+    "goober": "^2.0.37"
   },
   "peerDependencies": {
     "solid-js": ">= 0.26.0"
