@@ -1,7 +1,7 @@
 {
   "name": "solid-styled-components",
   "description": "Styled Components for Solid",
-  "version": "0.26.4",
+  "version": "0.27.0",
   "author": "Ryan Carniato",
   "license": "MIT",
   "repository": {
@@ -21,18 +21,18 @@
   },
   "dependencies": {
     "csstype": "^2.6.2",
-    "goober": "^2.0.37"
+    "goober": "^2.0.38"
   },
   "peerDependencies": {
-    "solid-js": ">= 0.26.0"
+    "solid-js": "^1.0.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "7.13.0",
     "@types/jest": "^26.0.23",
-    "babel-preset-solid": "^0.26.0",
+    "babel-preset-solid": "^1.0.0",
     "jest": "^26.6.3",
-    "solid-jest": "^0.0.3",
-    "solid-js": "^0.26.3",
+    "solid-jest": "^0.1.1",
+    "solid-js": "^1.0.0",
     "typescript": "^4.2.4"
   },
   "jest": {
