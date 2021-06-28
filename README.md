@@ -1,6 +1,5 @@
 # Solid Styled Components
 
-[![Build Status](https://github.com/solidui/solid-styled-components/workflows/Solid%20Styled%20Components%20CI/badge.svg)](https://github.com/solidui/solid-styled-components/actions/workflows/main-ci.yml)
 [![NPM Version](https://img.shields.io/npm/v/solid-styled-components.svg?style=flat)](https://www.npmjs.com/package/solid-styled-components)
 ![](https://img.shields.io/librariesio/release/npm/solid-styled-components)
 ![](https://img.shields.io/npm/dm/solid-styled-components.svg?style=flat)
