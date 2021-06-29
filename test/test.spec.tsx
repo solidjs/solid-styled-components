@@ -29,6 +29,23 @@ describe("Simple Styled", () => {
     });
   });
 
+  test("Creates input properly", () => {
+    const Input = styled('input')`
+      width: 5em;
+      text-align: right;
+    `;
+
+    let currentTarget:HTMLInputElement
+    createRoot(() => {
+      const v = (
+        <Input
+          type="number"
+          onchange={evt=>currentTarget = evt.currentTarget}
+        />
+      );
+    })
+  })
+
   test("Test Theming", () => {
     const Div = styled("div")<{ bold: boolean; border: number; color: string }>`
       color: steelblue;
