@@ -25,7 +25,7 @@ export declare function ThemeProvider<
 >(props: T): JSX.Element;
 export declare function useTheme(): unknown;
 export declare function styled<T extends keyof JSX.IntrinsicElements>(
-  tag: T | ((props: JSX.HTMLAttributes<JSX.IntrinsicElements[T]>) => JSX.Element)
+  tag: T | ((props: JSX.IntrinsicElements[T]) => JSX.Element)
 ): <P>(
   args_0:
     | string
@@ -51,8 +51,8 @@ export declare function styled<T extends keyof JSX.IntrinsicElements>(
         }
       ) => string | number | CSSAttribute | undefined)
   )[]
-) => ((props: P & JSX.HTMLAttributes<JSX.IntrinsicElements[T]>) => JSX.Element) & {
-  className: (props: P & JSX.HTMLAttributes<JSX.IntrinsicElements[T]>) => string;
+) => ((props: P & JSX.IntrinsicElements[T]) => JSX.Element) & {
+  className: (props: P & JSX.IntrinsicElements[T]) => string;
 };
 export declare function createGlobalStyles(
   tag: CSSAttribute | TemplateStringsArray | string,
