@@ -1,5 +1,5 @@
 /* @jsxImportSource solid-js */
-import { createRoot } from "solid-js";
+import { createRoot, Component } from "solid-js";
 import { styled, ThemeProvider, setup } from "../src/index";
 
 describe("Simple Styled", () => {
@@ -45,6 +45,32 @@ describe("Simple Styled", () => {
       );
     })
   })
+
+  test("Creates component of styled component properly", () => {
+    const SuperDiv = styled("div")`
+      color: red;
+    `;
+
+    const UltraDiv = styled(SuperDiv)`
+      background-color: yellow;
+    `;
+
+    createRoot(() => {
+      const v = <UltraDiv />;
+    });
+  });
+
+  test("Creates component of Component properly", () => {
+    const BaseComponent: Component<{ foo: string }> = props => <div>{props.foo}</div>;
+
+    const StyledComponent = styled(BaseComponent)`
+      color: red;
+    `;
+
+    createRoot(() => {
+      const v = <StyledComponent foo="bar" />;
+    });
+  });
 
   test("Test Theming", () => {
     const Div = styled("div")<{ bold: boolean; border: number; color: string }>`

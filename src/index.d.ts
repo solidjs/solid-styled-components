@@ -54,6 +54,36 @@ export declare function styled<T extends keyof JSX.IntrinsicElements>(
 ) => ((props: P & JSX.IntrinsicElements[T]) => JSX.Element) & {
   className: (props: P & JSX.IntrinsicElements[T]) => string;
 };
+export declare function styled<T extends {}>(
+  component: (props: T) => JSX.Element
+): <P = T>(
+  args_0:
+    | string
+    | TemplateStringsArray
+    | CSSAttribute
+    | ((
+        props: P & {
+          theme?: any;
+          as?: string | number | symbol | undefined;
+          className?: any;
+          children?: any;
+        }
+      ) => string | CSSAttribute),
+  ...args_1: (
+    | string
+    | number
+    | ((
+        props: P & {
+          theme?: any;
+          as?: string | number | symbol | undefined;
+          className?: any;
+          children?: any;
+        }
+      ) => string | number | CSSAttribute | undefined)
+  )[]
+) => ((props: P & T) => JSX.Element) & {
+  className: (props: P & T) => string;
+};
 export declare function createGlobalStyles(
   tag: CSSAttribute | TemplateStringsArray | string,
   ...props: Array<string | number | Function>
