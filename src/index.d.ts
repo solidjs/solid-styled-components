@@ -54,10 +54,15 @@ type Tagged<T> = <P>(
 ) => ((props: P & T) => JSX.Element) & {
   className: (props: P & T) => string;
 };
-export declare function styled<T extends keyof JSX.IntrinsicElements>(
-  tag: T | ((props: JSX.IntrinsicElements[T]) => JSX.Element)
-): Tagged<JSX.IntrinsicElements[T]>;
-export declare function styled<T>(component: (props: T) => JSX.Element): Tagged<T>;
+export interface Styled {
+  <T extends keyof JSX.IntrinsicElements>(
+    tag: T | ((props: JSX.IntrinsicElements[T]) => JSX.Element)
+  ): Tagged<JSX.IntrinsicElements[T]>;
+  <T>(component: (props: T) => JSX.Element): Tagged<T>;
+}
+export declare const styled: Styled & {
+  [Tag in keyof JSX.IntrinsicElements]: Tagged<JSX.IntrinsicElements[Tag]>;
+};
 export declare function createGlobalStyles(
   tag: CSSAttribute | TemplateStringsArray | string,
   ...props: Array<string | number | Function>

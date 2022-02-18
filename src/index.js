@@ -24,7 +24,8 @@ export function ThemeProvider(props) {
 export function useTheme() {
   return useContext(ThemeContext);
 }
-export function styled(tag) {
+
+function makeStyled(tag) {
   let _ctx = this || {};
   return (...args) => {
     const Styled = props => {
@@ -68,6 +69,13 @@ export function styled(tag) {
     return Styled;
   };
 }
+
+export const styled = new Proxy(makeStyled, {
+  get(target, tag) {
+    return target(tag);
+  },
+})
+
 export function createGlobalStyles() {
   const fn = styled.call({ g: 1 }, "div").apply(null, arguments);
   return function GlobalStyles(props) {

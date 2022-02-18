@@ -46,6 +46,20 @@ describe("Simple Styled", () => {
     })
   })
 
+  test("Creates paragraph properly using dot notation", () => {
+    const P = styled.p`
+      padding: 10px;
+      font-size: 40px;
+      border: 2px dashed tomato;
+    `;
+
+    createRoot(() => {
+      const v = (
+        <P>Content</P>
+      );
+    })
+  })
+
   test("Creates component of styled component properly", () => {
     const SuperDiv = styled("div")`
       color: red;
