@@ -1,5 +1,6 @@
 import { Properties as CSSProperties } from "csstype";
 import { JSX } from "solid-js";
+export interface DefaultTheme {}
 export interface CSSAttribute extends CSSProperties {
   [key: string]: CSSAttribute | string | number | undefined;
 }
@@ -19,11 +20,11 @@ export declare function css(
 export declare function setup(prefixer: (key: string, value: any) => string): void;
 export declare function ThemeProvider<
   T extends {
-    theme: any;
+    theme: DefaultTheme;
     children?: any;
   }
 >(props: T): JSX.Element;
-export declare function useTheme(): unknown;
+export declare function useTheme(): DefaultTheme;
 type Tagged<T> = <P>(
   args_0:
     | string
@@ -32,7 +33,7 @@ type Tagged<T> = <P>(
     | ((
         props: P &
           T & {
-            theme?: any;
+            theme?: DefaultTheme;
             as?: string | number | symbol | undefined;
             className?: any;
             children?: any;
@@ -44,7 +45,7 @@ type Tagged<T> = <P>(
     | ((
         props: P &
           T & {
-            theme?: any;
+            theme?: DefaultTheme;
             as?: string | number | symbol | undefined;
             className?: any;
             children?: any;

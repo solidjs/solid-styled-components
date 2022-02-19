@@ -91,7 +91,7 @@ describe("Simple Styled", () => {
       color: steelblue;
       font-size: 32px;
       padding: 5px;
-      border: ${({ border = 1, theme }): string => `${border}px solid ${theme.colors.primary}`};
+      border: ${({ border = 1, theme }): string => `${border}px solid ${theme?.colors.primary ?? 'black'}`};
       background-color: linen;
       font-weight: ${({ bold = false }): string | number => (bold ? "bold" : 100)};
     `;

@@ -202,3 +202,54 @@ The library provides a `useTheme` hook if you wish to use it elsewhere like in y
 ### `setup(prefixer: (key: string, value: any) => string)`
 
 Set up a custom prefixer.
+
+## Using ThemeProvider in TypeScript
+
+Before you can effectively start to use the ThemeProvider in TypeScript you will have to do a little bit of configuration.
+
+### Create a declarations file
+
+TypeScript definitions for solid-styled-components can be extended by using [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html).
+
+The first step is to create a declarations file. For example, let's name it `styled.d.ts`:
+
+```typescript
+// import original module declarations
+import "solid-styled-components";
+
+// and extend them!
+declare module "solid-styled-components" {
+  export interface DefaultTheme {
+    colors: {
+      primary: string;
+    };
+  }
+}
+```
+
+`DefaultTheme` is being used as an interface of `props.theme` out of the box. By default the interface `DefaultTheme` is empty so that's why we need to extend it.
+
+Now we can create a theme just by using the DefaultTheme declared at the step above.
+
+```tsx
+import { styled, ThemeProvider, DefaultTheme } from "solid-styled-components";
+
+const theme: DefaultTheme = {
+  colors: {
+    primary: "hotpink"
+  }
+};
+
+const SomeText = styled("div")`
+  color: ${props => props.theme.colors.primary};
+`;
+
+render(
+  () => (
+    <ThemeProvider theme={theme}>
+      <SomeText>some text</SomeText>
+    </ThemeProvider>
+  ),
+  document.getElementById("app")
+);
+```
