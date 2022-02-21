@@ -77,7 +77,7 @@ export const styled = new Proxy(makeStyled, {
 })
 
 export function createGlobalStyles() {
-  const fn = styled.call({ g: 1 }, "div").apply(null, arguments);
+  const fn = makeStyled.call({ g: 1 }, "div").apply(null, arguments);
   return function GlobalStyles(props) {
     fn(props);
     return null;
