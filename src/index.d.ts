@@ -17,7 +17,13 @@ export declare function css(
   tag: CSSAttribute | TemplateStringsArray | string,
   ...props: Array<string | number>
 ): string;
-export declare function setup(prefixer: (key: string, value: any) => string): void;
+export declare function shouldForwardProp(
+  predicate: (x: string) => boolean
+): (props: string[]) => string[];
+export declare function setup(
+  prefixer: null | ((key: string, value: any) => string),
+  shouldForwardProp?: null | ((props: string[]) => string[])
+): void;
 export declare function ThemeProvider<
   T extends {
     theme: DefaultTheme;

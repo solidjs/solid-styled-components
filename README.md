@@ -199,9 +199,32 @@ render(
 
 The library provides a `useTheme` hook if you wish to use it elsewhere like in you `css` functions.
 
-### `setup(prefixer: (key: string, value: any) => string)`
+### Custom prefixer
 
-Set up a custom prefixer.
+Use `setup` to set up a custom prefixer.
+
+```ts
+setup(
+  prefixer: null | ((key: string, value: any) => string)
+  shouldForwardProp?: null | ((props: string[]) => string[])
+)
+```
+
+### `shouldForwardProp`
+
+To prevent unwanted props attaching to the generated HTML, you can use the `shouldForwardProp` helper:
+
+```ts
+import { shouldForwardProp } from "solid-styled-components";
+
+setup(null, shouldForwardProp(prop => {
+  return prop !== "foo";
+}));
+```
+
+This will prevent the `foo` prop from appearing as an HTML attribute.
+
+Note: Be careful not to filter out props such as `children` or `onClick` this way; these are already handled internally.
 
 ## Using ThemeProvider in TypeScript
 
