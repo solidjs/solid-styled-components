@@ -43,13 +43,13 @@ function makeStyled(tag) {
           return [pClassName, className].filter(Boolean).join(" ");
         }
       });
-      const [local, newProps] = splitProps(clone, ["as"]);
+      const [local, newProps] = splitProps(clone, ["as", "theme"]);
       const createTag = local.as || tag;
       let el;
       if (typeof createTag === "function") {
         el = createTag(newProps);
       } else if (isServer) {
-        const [local, others] = splitProps(newProps, ["children"]);
+        const [local, others] = splitProps(newProps, ["children", "theme"]);
         el = ssr(
           [`<${createTag} `, ">", `</${createTag}>`],
           ssrSpread(others),
