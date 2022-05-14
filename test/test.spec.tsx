@@ -1,7 +1,6 @@
 /* @jsxImportSource solid-js */
 import { createRoot, Component } from "solid-js";
-import { styled, ThemeProvider, setup, DefaultTheme } from "../src/index";
-
+import { styled, ThemeProvider, setup } from "../src/index";
 
 declare module "../src/index" {
   interface DefaultTheme {
