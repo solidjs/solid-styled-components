@@ -9,8 +9,16 @@ import {
 } from "solid-js";
 import { spread, ssr, ssrSpread, isServer } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
-export function setup(prefixer) {
+
+let getForwardProps = null;
+
+export function shouldForwardProp(predicate) {
+  return props => props.filter(predicate);
+}
+
+export function setup(prefixer, shouldForwardProp = null) {
   gooberSetup(null, prefixer);
+  getForwardProps = shouldForwardProp;
 }
 const ThemeContext = createContext();
 export function ThemeProvider(props) {
@@ -44,12 +52,15 @@ function makeStyled(tag) {
         }
       });
       const [local, newProps] = splitProps(clone, ["as", "theme"]);
+      const htmlProps = getForwardProps
+        ? splitProps(newProps, getForwardProps(Object.keys(newProps)))[0]
+        : newProps;
       const createTag = local.as || tag;
       let el;
       if (typeof createTag === "function") {
-        el = createTag(newProps);
+        el = createTag(htmlProps);
       } else if (isServer) {
-        const [local, others] = splitProps(newProps, ["children", "theme"]);
+        const [local, others] = splitProps(htmlProps, ["children", "theme"]);
         el = ssr(
           [`<${createTag} `, ">", `</${createTag}>`],
           ssrSpread(others),
@@ -57,7 +68,7 @@ function makeStyled(tag) {
         );
       } else {
         el = document.createElement(createTag);
-        spread(el, newProps);
+        spread(el, htmlProps);
       }
       return el;
     };
@@ -73,8 +84,8 @@ function makeStyled(tag) {
 export const styled = new Proxy(makeStyled, {
   get(target, tag) {
     return target(tag);
-  },
-})
+  }
+});
 
 export function createGlobalStyles() {
   const fn = makeStyled.call({ g: 1 }, "div").apply(null, arguments);
