@@ -41,7 +41,7 @@ type Tagged<T> = <P>(
           T & {
             theme?: DefaultTheme;
             as?: string | number | symbol | undefined;
-            className?: any;
+            class?: any;
             children?: any;
           }
       ) => string | CSSAttribute),
@@ -53,13 +53,13 @@ type Tagged<T> = <P>(
           T & {
             theme?: DefaultTheme;
             as?: string | number | symbol | undefined;
-            className?: any;
+            class?: any;
             children?: any;
           }
       ) => string | number | CSSAttribute | undefined)
   )[]
 ) => ((props: P & T) => JSX.Element) & {
-  className: (props: P & T) => string;
+  class: (props: P & T) => string;
 };
 export interface Styled {
   <T extends keyof JSX.IntrinsicElements>(

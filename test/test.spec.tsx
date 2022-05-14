@@ -2,6 +2,15 @@
 import { createRoot, Component } from "solid-js";
 import { styled, ThemeProvider, setup } from "../src/index";
 
+declare module "../src/index" {
+  interface DefaultTheme {
+    colors: {
+      primary?: string;
+      secondary?: string;
+    };
+  }
+}
+
 describe("Simple Styled", () => {
   test("Creates component properly", () => {
     const Div = styled("div")<{ bold: boolean; border: number; color: string }>`
@@ -18,7 +27,7 @@ describe("Simple Styled", () => {
         <Div
           aria-label="button"
           onClick={() => {}}
-          className="test"
+          class="test"
           bold={true}
           border={1}
           color="whitesmoke"
@@ -30,21 +39,16 @@ describe("Simple Styled", () => {
   });
 
   test("Creates input properly", () => {
-    const Input = styled('input')`
+    const Input = styled("input")`
       width: 5em;
       text-align: right;
     `;
 
-    let currentTarget:HTMLInputElement
+    let currentTarget: HTMLInputElement;
     createRoot(() => {
-      const v = (
-        <Input
-          type="number"
-          onchange={evt=>currentTarget = evt.currentTarget}
-        />
-      );
-    })
-  })
+      const v = <Input type="number" onchange={evt => (currentTarget = evt.currentTarget)} />;
+    });
+  });
 
   test("Creates paragraph properly using dot notation", () => {
     const P = styled.p`
@@ -54,11 +58,9 @@ describe("Simple Styled", () => {
     `;
 
     createRoot(() => {
-      const v = (
-        <P>Content</P>
-      );
-    })
-  })
+      const v = <P>Content</P>;
+    });
+  });
 
   test("Creates component of styled component properly", () => {
     const SuperDiv = styled("div")`
@@ -91,7 +93,8 @@ describe("Simple Styled", () => {
       color: steelblue;
       font-size: 32px;
       padding: 5px;
-      border: ${({ border = 1, theme }): string => `${border}px solid ${theme?.colors.primary ?? 'black'}`};
+      border: ${({ border = 1, theme }): string =>
+        `${border}px solid ${theme?.colors.primary ?? "black"}`};
       background-color: linen;
       font-weight: ${({ bold = false }): string | number => (bold ? "bold" : 100)};
     `;
@@ -105,7 +108,7 @@ describe("Simple Styled", () => {
             }
           }}
         >
-          <Div className="test" bold={true} border={1} color="whitesmoke">
+          <Div class="test" bold={true} border={1} color="whitesmoke">
             Testera
           </Div>
         </ThemeProvider>
@@ -129,7 +132,7 @@ describe("Simple Styled", () => {
         <Div
           aria-label="button"
           onClick={() => {}}
-          className="test"
+          class="test"
           bold={true}
           border={1}
           color="whitesmoke"

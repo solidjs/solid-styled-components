@@ -40,18 +40,18 @@ function makeStyled(tag) {
       const theme = useContext(ThemeContext);
       const withTheme = mergeProps(props, { theme });
       const clone = mergeProps(withTheme, {
-        get className() {
-          const pClassName = withTheme.className,
-            append = "className" in withTheme && /^go[0-9]+/.test(pClassName);
+        get class() {
+          const pClass = withTheme.class,
+            append = "class" in withTheme && /^go[0-9]+/.test(pClass);
           // Call `css` with the append flag and pass the props
           let className = css.apply(
             { target: _ctx.target, o: append, p: withTheme, g: _ctx.g },
             args
           );
-          return [pClassName, className].filter(Boolean).join(" ");
+          return [pClass, className].filter(Boolean).join(" ");
         }
       });
-      const [local, newProps] = splitProps(clone, ["as"]);
+      const [local, newProps] = splitProps(clone, ["as", "theme"]);
       const htmlProps = getForwardProps
         ? splitProps(newProps, getForwardProps(Object.keys(newProps)))[0]
         : newProps;
@@ -60,7 +60,7 @@ function makeStyled(tag) {
       if (typeof createTag === "function") {
         el = createTag(htmlProps);
       } else if (isServer) {
-        const [local, others] = splitProps(htmlProps, ["children"]);
+        const [local, others] = splitProps(htmlProps, ["children", "theme"]);
         el = ssr(
           [`<${createTag} `, ">", `</${createTag}>`],
           ssrSpread(others),
@@ -72,7 +72,7 @@ function makeStyled(tag) {
       }
       return el;
     };
-    Styled.className = props => {
+    Styled.class = props => {
       return untrack(() => {
         return css.apply({ target: _ctx.target, p: props, g: _ctx.g }, args);
       });

@@ -72,7 +72,7 @@ const Button = styled("button")`
     margin: 0;
   }
 
-  ${Icon.className} {
+  ${Icon.class} {
     color: black;
   }
 `;
@@ -92,18 +92,18 @@ const Btn = styled("button")(props => ({
 
 ### `css`
 
-- `@returns {String}` Returns the className.
+- `@returns {String}` Returns the class.
 
-To create a className, you need to call `css` with your style rules in a tagged template:
+To create a class, you need to call `css` with your style rules in a tagged template:
 
 ```jsx
 import { css } from "solid-styled-components";
 
-const BtnClassName = css`
+const BtnClass = css`
   border-radius: 4px;
 `;
 
-const App => <button className={BtnClassName}>click</button>
+const App => <button class={BtnClass}>click</button>
 ```
 
 Or an object:
@@ -111,9 +111,9 @@ Or an object:
 ```js
 import { css } from "solid-styled-components";
 
-const BtnClassName = css({ borderRadius: "4px" })
+const BtnClass = css({ borderRadius: "4px" })
 
-const App => <button className={BtnClassName}>click</button>
+const App => <button class={BtnClass}>click</button>
 ```
 
 #### Passing props to `css` tagged templates
@@ -124,7 +124,7 @@ import { css } from "solid-styled-components";
 // JSX
 const CustomButton = props => (
   <button
-    className={css`
+    class={css`
       border-radius: ${props.size}px;
     `}
   >
