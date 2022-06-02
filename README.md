@@ -148,6 +148,24 @@ const styleTag = `<style id="_goober">${extractCss()}</style>`;
 // Note: To be able to `hydrate` the styles you should use the proper `id` so `goober` can pick it up and use it as the target from now on
 ```
 
+### `keyframes`
+
+- `@returns {String}`
+
+Add keyframe animations to a style component.
+
+```js
+const rotate = keyframes`
+  100% { 
+    transform:rotate(360deg); 
+  }
+`
+
+const LoadingIcon = styled.img`
+  animation: ${ rotate } 1s linear infinite;
+`
+```
+
 ### `createGlobalStyles`
 
 For a global style component, you call `createGlobalStyles` with your global tagged template.
@@ -172,7 +190,7 @@ const GlobalStyles = () => {
 
 ### `Theme`
 
-You can set a Theme Provider (remember to use state or signals if you want it to be reactive)
+You can set a Theme Provider (remember to use state or signals if you want it to be reactive).
 
 ```jsx
 import { styled, ThemeProvider } from "solid-styled-components";
