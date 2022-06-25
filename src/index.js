@@ -6,8 +6,9 @@ import {
   useContext,
   createComponent,
   untrack,
+  children,
 } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { Dynamic, NoHydration, isServer, ssr } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 
 let getForwardProps = null;
@@ -57,10 +58,16 @@ function makeStyled(tag) {
         : newProps;
       const createTag = local.as || tag;
       let el;
+
       if (typeof createTag === "function") {
         el = createTag(htmlProps);
       } else {
-        el = Dynamic({ component: createTag, ...htmlProps });
+        if (isServer) {
+          const [local, others] = splitProps(htmlProps, ["children", "theme"]);
+          el = Dynamic({ component: createTag, children: local.children, ...others });
+        } else {
+          el = Dynamic({ component: createTag, ...htmlProps });
+        }
       }
       return el;
     };
@@ -82,6 +89,7 @@ export const styled = new Proxy(makeStyled, {
 
 export function createGlobalStyles() {
   const fn = makeStyled.call({ g: 1 }, "div").apply(null, arguments);
+
   return function GlobalStyles(props) {
     fn(props);
     return null;
