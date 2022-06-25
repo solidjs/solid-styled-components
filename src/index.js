@@ -6,9 +6,8 @@ import {
   useContext,
   createComponent,
   untrack,
-  children,
 } from "solid-js";
-import { Dynamic, NoHydration, isServer, ssr } from "solid-js/web";
+import { Dynamic, isServer } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 
 let getForwardProps = null;
@@ -66,7 +65,12 @@ function makeStyled(tag) {
           const [local, others] = splitProps(htmlProps, ["children", "theme"]);
           el = Dynamic({ component: createTag, children: local.children, ...others });
         } else {
-          el = Dynamic({ component: createTag, ...htmlProps });
+          if (_ctx.g == 1) {
+            // When using Global Styles we don't want to hydrate the unused nodes
+            el = document.createElement(createTag);
+          } else {
+            el = Dynamic({ component: createTag, ...htmlProps });
+          }
         }
       }
       return el;
@@ -93,5 +97,5 @@ export function createGlobalStyles() {
   return function GlobalStyles(props) {
     fn(props);
     return null;
-  };
+  }
 }
