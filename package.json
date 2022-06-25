@@ -1,7 +1,7 @@
 {
   "name": "solid-styled-components",
   "description": "Styled Components for Solid",
-  "version": "0.28.1",
+  "version": "0.28.2",
   "author": "Ryan Carniato",
   "license": "MIT",
   "repository": {
@@ -20,19 +20,19 @@
     "test:types": "tsc --project tsconfig.test.json"
   },
   "dependencies": {
-    "csstype": "^3.0.10",
-    "goober": "^2.1.8"
+    "csstype": "^3.1.0",
+    "goober": "^2.1.10"
   },
   "peerDependencies": {
-    "solid-js": "^1.4.1"
+    "solid-js": "^1.4.4"
   },
   "devDependencies": {
     "@babel/preset-typescript": "7.16.7",
     "@types/jest": "^27.4.0",
-    "babel-preset-solid": "^1.4.0",
+    "babel-preset-solid": "^1.4.4",
     "jest": "^27.4.7",
     "solid-jest": "^0.2.0",
-    "solid-js": "^1.4.1",
+    "solid-js": "^1.4.4",
     "typescript": "^4.5.4"
   },
   "jest": {
