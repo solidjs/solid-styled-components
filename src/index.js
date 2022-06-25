@@ -5,9 +5,9 @@ import {
   createContext,
   useContext,
   createComponent,
-  untrack
+  untrack,
 } from "solid-js";
-import { spread, ssr, ssrSpread, isServer } from "solid-js/web";
+import { Dynamic } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 
 let getForwardProps = null;
@@ -59,16 +59,8 @@ function makeStyled(tag) {
       let el;
       if (typeof createTag === "function") {
         el = createTag(htmlProps);
-      } else if (isServer) {
-        const [local, others] = splitProps(htmlProps, ["children", "theme"]);
-        el = ssr(
-          [`<${createTag} `, ">", `</${createTag}>`],
-          ssrSpread(others),
-          local.children || ""
-        );
       } else {
-        el = document.createElement(createTag);
-        spread(el, htmlProps);
+        el = Dynamic({ component: createTag, ...htmlProps });
       }
       return el;
     };
@@ -77,6 +69,7 @@ function makeStyled(tag) {
         return css.apply({ target: _ctx.target, p: props, g: _ctx.g }, args);
       });
     };
+
     return Styled;
   };
 }
