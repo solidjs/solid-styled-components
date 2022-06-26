@@ -40,7 +40,7 @@ type Tagged<T> = <P>(
         props: P &
           T & {
             theme?: DefaultTheme;
-            as?: string | number | symbol | undefined;
+            as?: string | number | symbol;
             class?: any;
             children?: any;
           }
@@ -52,7 +52,7 @@ type Tagged<T> = <P>(
         props: P &
           T & {
             theme?: DefaultTheme;
-            as?: string | number | symbol | undefined;
+            as?: string | number | symbol;
             class?: any;
             children?: any;
           }
