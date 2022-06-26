@@ -1,25 +1,25 @@
-name: 'Solid Styled Components CI'
+name: "Solid Styled Components CI"
 
 on:
   pull_request:
     branches:
-      - '*'
+      - "*"
   push:
     branches:
       - main
 
 jobs:
- job:
-  runs-on: ubuntu-latest
-  steps:
-  - uses: actions/checkout@v2
-  - uses: actions/setup-node@v2
-    with:
-      node-version: 14
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
-  - name: Installing deps
-    run: npm install
+      - name: Installing deps
+        run: npm install
 
-  - name: Testing & Coverage
-    run: |
-      npm run test
+      - name: Testing & Coverage
+        run: |
+          npm run test

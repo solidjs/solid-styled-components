@@ -9,7 +9,5 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js"
   },
-  "include": [
-    "./test"
-  ]
+  "include": ["./test"]
 }

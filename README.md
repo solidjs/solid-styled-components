@@ -159,11 +159,11 @@ const rotate = keyframes`
   100% { 
     transform:rotate(360deg); 
   }
-`
+`;
 
 const LoadingIcon = styled.img`
-  animation: ${ rotate } 1s linear infinite;
-`
+  animation: ${rotate} 1s linear infinite;
+`;
 ```
 
 ### `createGlobalStyles`
@@ -235,9 +235,12 @@ To prevent unwanted props attaching to the generated HTML, you can use the `shou
 ```ts
 import { shouldForwardProp } from "solid-styled-components";
 
-setup(null, shouldForwardProp(prop => {
-  return prop !== "foo";
-}));
+setup(
+  null,
+  shouldForwardProp(prop => {
+    return prop !== "foo";
+  })
+);
 ```
 
 This will prevent the `foo` prop from appearing as an HTML attribute.
