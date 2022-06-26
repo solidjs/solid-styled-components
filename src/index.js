@@ -56,20 +56,19 @@ function makeStyled(tag) {
         ? splitProps(newProps, getForwardProps(Object.keys(newProps)))[0]
         : newProps;
       const createTag = local.as || tag;
-      let el;
       if (typeof createTag === "function") {
-        el = createTag(htmlProps);
-      } else if (isServer) {
+        return createTag(htmlProps);
+      }
+      if (isServer) {
         const [local, others] = splitProps(htmlProps, ["children"]);
-        el = ssr(
+        return ssr(
           [`<${createTag} `, ">", `</${createTag}>`],
           ssrSpread(others),
           local.children || ""
         );
-      } else {
-        el = document.createElement(createTag);
-        spread(el, htmlProps);
       }
+      const el = document.createElement(createTag);
+      spread(el, htmlProps);
       return el;
     };
     Styled.class = props => {
