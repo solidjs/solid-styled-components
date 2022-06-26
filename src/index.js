@@ -37,7 +37,7 @@ function makeStyled(tag) {
   let _ctx = this || {};
   return (...args) => {
     const Styled = props => {
-      const theme = useContext(ThemeContext);
+      const theme = useTheme();
       const withTheme = mergeProps(props, { theme });
       const clone = mergeProps(withTheme, {
         get class() {
