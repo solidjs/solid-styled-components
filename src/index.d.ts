@@ -22,7 +22,7 @@ export declare function shouldForwardProp(
 ): (props: string[]) => string[];
 export declare function setup(
   prefixer: null | ((key: string, value: any) => string),
-  shouldForwardProp?: null | ((props: string[]) => string[])
+  shouldForwardProp?: ((props: string[]) => string[])
 ): void;
 export declare function ThemeProvider<
   T extends {

@@ -10,15 +10,17 @@ import {
 import { spread, ssr, ssrSpread, isServer } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 
-let getForwardProps = null;
+let getForwardProps;
 
 export function shouldForwardProp(predicate) {
   return props => props.filter(predicate);
 }
 
-export function setup(prefixer, shouldForwardProp = null) {
+export function setup(prefixer, shouldForwardProp) {
   gooberSetup(null, prefixer);
-  getForwardProps = shouldForwardProp;
+  if (shouldForwardProp) {
+    getForwardProps = shouldForwardProp;
+  }
 }
 const ThemeContext = createContext();
 export function ThemeProvider(props) {
