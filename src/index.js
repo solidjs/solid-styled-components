@@ -34,7 +34,7 @@ export function useTheme() {
 }
 
 function makeStyled(tag) {
-  let _ctx = this || {};
+  const _ctx = this || {};
   return (...args) => {
     const Styled = props => {
       const theme = useTheme();
@@ -44,7 +44,7 @@ function makeStyled(tag) {
           const pClass = withTheme.class,
             append = "class" in withTheme && /^go[0-9]+/.test(pClass);
           // Call `css` with the append flag and pass the props
-          let className = css.apply(
+          const className = css.apply(
             { target: _ctx.target, o: append, p: withTheme, g: _ctx.g },
             args
           );
