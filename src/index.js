@@ -5,9 +5,9 @@ import {
   createContext,
   useContext,
   createComponent,
-  untrack
+  untrack,
 } from "solid-js";
-import { spread, ssr, ssrSpread, isServer } from "solid-js/web";
+import { Dynamic, isServer } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 
 let getForwardProps = null;
@@ -57,18 +57,21 @@ function makeStyled(tag) {
         : newProps;
       const createTag = local.as || tag;
       let el;
+
       if (typeof createTag === "function") {
         el = createTag(htmlProps);
-      } else if (isServer) {
-        const [local, others] = splitProps(htmlProps, ["children", "theme"]);
-        el = ssr(
-          [`<${createTag} `, ">", `</${createTag}>`],
-          ssrSpread(others),
-          local.children || ""
-        );
       } else {
-        el = document.createElement(createTag);
-        spread(el, htmlProps);
+        if (isServer) {
+          const [local, others] = splitProps(htmlProps, ["children", "theme"]);
+          el = Dynamic({ component: createTag, children: local.children, ...others });
+        } else {
+          if (_ctx.g == 1) {
+            // When using Global Styles we don't want to hydrate the unused nodes
+            el = document.createElement(createTag);
+          } else {
+            el = Dynamic({ component: createTag, ...htmlProps });
+          }
+        }
       }
       return el;
     };
@@ -77,6 +80,7 @@ function makeStyled(tag) {
         return css.apply({ target: _ctx.target, p: props, g: _ctx.g }, args);
       });
     };
+
     return Styled;
   };
 }
@@ -89,8 +93,9 @@ export const styled = new Proxy(makeStyled, {
 
 export function createGlobalStyles() {
   const fn = makeStyled.call({ g: 1 }, "div").apply(null, arguments);
+
   return function GlobalStyles(props) {
     fn(props);
     return null;
-  };
+  }
 }
