@@ -60,7 +60,7 @@ function makeStyled(tag) {
       if (typeof createTag === "function") {
         el = createTag(htmlProps);
       } else if (isServer) {
-        const [local, others] = splitProps(htmlProps, ["children", "theme"]);
+        const [local, others] = splitProps(htmlProps, ["children"]);
         el = ssr(
           [`<${createTag} `, ">", `</${createTag}>`],
           ssrSpread(others),
