@@ -5,7 +5,7 @@ import {
   createContext,
   useContext,
   createComponent,
-  untrack,
+  untrack
 } from "solid-js";
 import { Dynamic, isServer } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
@@ -63,13 +63,19 @@ function makeStyled(tag) {
       } else {
         if (isServer) {
           const [local, others] = splitProps(htmlProps, ["children", "theme"]);
-          el = Dynamic({ component: createTag, children: local.children, ...others });
+          el = Dynamic({
+            component: createTag,
+            get children() {
+              return local.children;
+            },
+            ...others
+          });
         } else {
           if (_ctx.g == 1) {
             // When using Global Styles we don't want to hydrate the unused nodes
             el = document.createElement(createTag);
           } else {
-            el = Dynamic({ component: createTag, ...htmlProps });
+            el = Dynamic(mergeProps({ component: createTag }, htmlProps));
           }
         }
       }
@@ -97,5 +103,5 @@ export function createGlobalStyles() {
   return function GlobalStyles(props) {
     fn(props);
     return null;
-  }
+  };
 }
