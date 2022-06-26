@@ -21,8 +21,8 @@ export declare function shouldForwardProp(
   predicate: (x: string) => boolean
 ): (props: string[]) => string[];
 export declare function setup(
-  prefixer: null | ((key: string, value: any) => string),
-  shouldForwardProp?: ((props: string[]) => string[])
+  prefixer?: (key: string, value: any) => string,
+  shouldForwardProp?: (props: string[]) => string[]
 ): void;
 export declare function ThemeProvider<
   T extends {
