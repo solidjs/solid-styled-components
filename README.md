@@ -223,8 +223,8 @@ Use `setup` to set up a custom prefixer.
 
 ```ts
 setup(
-  prefixer: null | ((key: string, value: any) => string)
-  shouldForwardProp?: null | ((props: string[]) => string[])
+  prefixer?: (key: string, value: any) => string
+  shouldForwardProp?:  (props: string[]) => string[]
 )
 ```
 
@@ -236,7 +236,7 @@ To prevent unwanted props attaching to the generated HTML, you can use the `shou
 import { shouldForwardProp } from "solid-styled-components";
 
 setup(
-  null,
+  undefined,
   shouldForwardProp(prop => {
     return prop !== "foo";
   })
