@@ -5,9 +5,9 @@ import {
   createContext,
   useContext,
   createComponent,
-  untrack
+  untrack,
 } from "solid-js";
-import { Dynamic, isServer } from "solid-js/web";
+import { Dynamic, isServer, spread } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 
 let getForwardProps = null;
@@ -74,6 +74,7 @@ function makeStyled(tag) {
           if (_ctx.g == 1) {
             // When using Global Styles we don't want to hydrate the unused nodes
             el = document.createElement(createTag);
+            spread(el, htmlProps);
           } else {
             el = Dynamic(mergeProps({ component: createTag }, htmlProps));
           }
