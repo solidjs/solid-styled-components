@@ -10,13 +10,13 @@ import {
 import { Dynamic, isServer, spread } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 
-let getForwardProps = null;
+let getForwardProps;
 
 export function shouldForwardProp(predicate) {
   return props => props.filter(predicate);
 }
 
-export function setup(prefixer, shouldForwardProp = null) {
+export function setup(prefixer, shouldForwardProp) {
   gooberSetup(null, prefixer);
   getForwardProps = shouldForwardProp;
 }
@@ -34,17 +34,17 @@ export function useTheme() {
 }
 
 function makeStyled(tag) {
-  let _ctx = this || {};
+  const _ctx = this || {};
   return (...args) => {
     const Styled = props => {
-      const theme = useContext(ThemeContext);
+      const theme = useTheme();
       const withTheme = mergeProps(props, { theme });
       const clone = mergeProps(withTheme, {
         get class() {
           const pClass = withTheme.class,
             append = "class" in withTheme && /^go[0-9]+/.test(pClass);
           // Call `css` with the append flag and pass the props
-          let className = css.apply(
+          const className = css.apply(
             { target: _ctx.target, o: append, p: withTheme, g: _ctx.g },
             args
           );
@@ -56,32 +56,32 @@ function makeStyled(tag) {
         ? splitProps(newProps, getForwardProps(Object.keys(newProps)))[0]
         : newProps;
       const createTag = local.as || tag;
-      let el;
 
       if (typeof createTag === "function") {
-        el = createTag(htmlProps);
-      } else {
-        if (isServer) {
-          const [local, others] = splitProps(htmlProps, ["children", "theme"]);
-          el = Dynamic({
-            component: createTag,
-            get children() {
-              return local.children;
-            },
-            ...others
-          });
-        } else {
-          if (_ctx.g == 1) {
-            // When using Global Styles we don't want to hydrate the unused nodes
-            el = document.createElement(createTag);
-            spread(el, htmlProps);
-          } else {
-            el = Dynamic(mergeProps({ component: createTag }, htmlProps));
-          }
-        }
+        return createTag(htmlProps);
       }
+
+      if (isServer) {
+        const [local, others] = splitProps(htmlProps, ["children"]);
+        return Dynamic({
+          component: createTag,
+          get children() {
+            return local.children;
+          },
+          ...others
+        });
+      }
+
+      if (_ctx.g !== 1) {
+        return Dynamic(mergeProps({ component: createTag }, htmlProps));
+      }
+
+      // When using Global Styles we don't want to hydrate the unused nodes
+      const el = document.createElement(createTag);
+      spread(el, htmlProps);
       return el;
     };
+
     Styled.class = props => {
       return untrack(() => {
         return css.apply({ target: _ctx.target, p: props, g: _ctx.g }, args);
