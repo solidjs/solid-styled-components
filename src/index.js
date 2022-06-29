@@ -5,9 +5,9 @@ import {
   createContext,
   useContext,
   createComponent,
-  untrack
+  untrack,
 } from "solid-js";
-import { Dynamic, isServer } from "solid-js/web";
+import { Dynamic, isServer, spread } from "solid-js/web";
 export { css, glob, extractCss, keyframes } from "goober";
 
 let getForwardProps;
@@ -18,9 +18,7 @@ export function shouldForwardProp(predicate) {
 
 export function setup(prefixer, shouldForwardProp) {
   gooberSetup(null, prefixer);
-  if (shouldForwardProp) {
-    getForwardProps = shouldForwardProp;
-  }
+  getForwardProps = shouldForwardProp;
 }
 const ThemeContext = createContext();
 export function ThemeProvider(props) {
@@ -58,11 +56,13 @@ function makeStyled(tag) {
         ? splitProps(newProps, getForwardProps(Object.keys(newProps)))[0]
         : newProps;
       const createTag = local.as || tag;
+
       if (typeof createTag === "function") {
         return createTag(htmlProps);
       }
+      
       if (isServer) {
-        const [local, others] = splitProps(htmlProps, ["children"]);
+        const [local, others] = splitProps(htmlProps, ["children", "theme"]);
         return Dynamic({
           component: createTag,
           get children() {
@@ -71,12 +71,17 @@ function makeStyled(tag) {
           ...others
         });
       }
-      if (_ctx.g == 1) {
-        // When using Global Styles we don't want to hydrate the unused nodes
-        return document.createElement(createTag);
+
+      if (_ctx.g !== 1) {
+        return Dynamic(mergeProps({ component: createTag }, htmlProps));
       }
-      return Dynamic(mergeProps({ component: createTag }, htmlProps));
+
+      // When using Global Styles we don't want to hydrate the unused nodes
+      const el = document.createElement(createTag);
+      spread(el, htmlProps);
+      return el;
     };
+    
     Styled.class = props => {
       return untrack(() => {
         return css.apply({ target: _ctx.target, p: props, g: _ctx.g }, args);
