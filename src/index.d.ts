@@ -1,21 +1,41 @@
 import { Properties as CSSProperties } from "csstype";
-import { JSX } from "solid-js";
+import { JSX, Component } from "solid-js";
+
+// This type is only available in Solid 1.5 or later.
+type ValidComponent =
+  | keyof JSX.IntrinsicElements
+  | Component<any>
+  | (string & {});
+
 export interface DefaultTheme {}
 export interface CSSAttribute extends CSSProperties {
   [key: string]: CSSAttribute | string | number | undefined;
 }
+type StylesGenerator<P = {}> =
+  (props: P) => CSSAttribute | string;
+type TagStyleGenerator<P = {}> =
+  (props: P) => number | string | undefined;
+type TagArgs<P = {}> = Array<string | TagStyleGenerator<P>>;
+type StylesArg<P = {}> =
+  | string
+  | CSSAttribute
+  | StylesGenerator<P>
+  | Array<CSSAttribute | StylesGenerator<P>>;
+export declare function keyframes(styles: StylesArg): string;
 export declare function keyframes(
-  tag: TemplateStringsArray | string,
-  ...props: Array<string | number>
+  tag: TemplateStringsArray,
+  ...tagArgs: TagArgs
 ): string;
 export declare function extractCss(): string;
+export declare function glob(styles: StylesArg): void;
 export declare function glob(
-  tag: CSSAttribute | TemplateStringsArray | string,
-  ...props: Array<string | number>
+  tag: TemplateStringsArray,
+  ...tagArgs: TagArgs
 ): void;
+export declare function css(styles: StylesArg): string;
 export declare function css(
-  tag: CSSAttribute | TemplateStringsArray | string,
-  ...props: Array<string | number>
+  tag: TemplateStringsArray,
+  ...tagArgs: TagArgs
 ): string;
 export declare function shouldForwardProp(
   predicate: (x: string) => boolean
@@ -31,46 +51,35 @@ export declare function ThemeProvider<
   }
 >(props: T): JSX.Element;
 export declare function useTheme(): DefaultTheme;
-type Tagged<T> = <P>(
-  args_0:
-    | string
-    | TemplateStringsArray
-    | CSSAttribute
-    | ((
-        props: P &
-          T & {
-            theme?: DefaultTheme;
-            as?: string | number | symbol | undefined;
-            class?: any;
-            children?: any;
-          }
-      ) => string | CSSAttribute),
-  ...args_1: (
-    | string
-    | number
-    | ((
-        props: P &
-          T & {
-            theme?: DefaultTheme;
-            as?: string | number | symbol | undefined;
-            class?: any;
-            children?: any;
-          }
-      ) => string | number | CSSAttribute | undefined)
-  )[]
-) => ((props: P & T) => JSX.Element) & {
-  class: (props: P & T) => string;
+export interface ThemeProp {
+  theme?: DefaultTheme;
+}
+interface AsProps {
+  as?: ValidComponent;
+}
+type StylesFn<T> = <P>(
+  styles: StylesArg<P & T & AsProps & ThemeProp>,
+) => Component<P & T & AsProps> & {
+  class: (props: P & T & AsProps) => string;
 };
+type TagFn<T> = <P>(
+  tag: TemplateStringsArray,
+  ...args: TagArgs<P & T & AsProps & ThemeProp>,
+) => Component<P & T & AsProps> & {
+  class: (props: P & T & AsProps) => string;
+};
+type StylingFn<T> = StylesFn<T> & TagFn<T>;
 export interface Styled {
   <T extends keyof JSX.IntrinsicElements>(
-    tag: T | ((props: JSX.IntrinsicElements[T]) => JSX.Element)
-  ): Tagged<JSX.IntrinsicElements[T]>;
-  <T>(component: (props: T) => JSX.Element): Tagged<T>;
+    element: T | Component<JSX.IntrinsicElements[T]>
+  ): StylingFn<JSX.IntrinsicElements[T]>;
+  <T>(component: Component<T>): StylingFn<T>;
 }
 export declare const styled: Styled & {
-  [Tag in keyof JSX.IntrinsicElements]: Tagged<JSX.IntrinsicElements[Tag]>;
+  [element in keyof JSX.IntrinsicElements]: StylingFn<JSX.IntrinsicElements[element]>;
 };
 export declare function createGlobalStyles(
-  tag: CSSAttribute | TemplateStringsArray | string,
-  ...props: Array<string | number | Function>
-): Function;
+  tag: TemplateStringsArray,
+  ...tagArgs: TagArgs
+  ): () => null;
+export declare function createGlobalStyles(styles: StylesArg): () => null;

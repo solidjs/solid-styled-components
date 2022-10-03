@@ -38,6 +38,32 @@ describe("Simple Styled", () => {
     });
   });
 
+  test("Creates component properly with styles function", () => {
+    const Div = styled("div")<{ bold: boolean; border: number; color: string }>(({ bold, border, color }) => ({
+      color: "steelblue",
+      fontSize: "32px",
+      padding: "5px",
+      border: `${border}px solid ${color}`,
+      backgroundColor: "linen",
+      fontWeight: (bold ? "bold" : 100),
+    }));
+
+    createRoot(() => {
+      const v = (
+        <Div
+          aria-label="button"
+          onClick={() => {}}
+          class="test"
+          bold={true}
+          border={1}
+          color="whitesmoke"
+        >
+          Testera
+        </Div>
+      );
+    });
+  });
+
   test("Creates input properly", () => {
     const Input = styled("input")`
       width: 5em;
